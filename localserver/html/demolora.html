@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Demo test LoRa IoT platform</title>
+        <style>
+            /* .. */
+            div{
+                position: relative;
+                width: 250px;
+                height: 200px;
+                margin-left: 10px;
+                margin-top: 10px;
+                background-color: aquamarine;
+                border-radius: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <p id="nodeid_1_p"></p>
+            <p id="temp_1_p"></p>
+            <p id="humid_1_p"></p>
+            <p id="rssi_1_p"></p>
+            <p id="cnt_1_p"></p>
+            <p id="ts_1_p"></p>
+        </div>
+        <div>
+            <p id="nodeid_2_p"></p>
+            <p id="temp_2_p"></p>
+            <p id="humid_2_p"></p>
+            <p id="rssi_2_p"></p>
+            <p id="cnt_2_p"></p>
+            <p id="ts_2_p"></p>
+        </div>
+        <script src="./src/js/jquery-3.0.0.min.js"></script>
+        
+        <script>
+        
+        setInterval(function(){
+            getData(1);
+            getData(2);
+        }, 3000);    
+
+        function getData(_node_id){
+            $.getJSON('http://{LOCAL-SERVER-IP-ADDRESS}:8000/getlastdata/' + _node_id, {
+                //..
+            }).then(function(data){
+                console.log(data);
+                $('#nodeid_'+data.data.node_id+'_p').text('node id : ' + data.data.node_id);
+                $('#temp_'+data.data.node_id+'_p').text('Temp. : ' + data.data.temp);
+                $('#humid_'+data.data.node_id+'_p').text('Humid. : ' + data.data.humid);
+                $('#rssi_'+data.data.node_id+'_p').text('RSSI : ' + data.data.rssi);
+                $('#cnt_'+data.data.node_id+'_p').text('Count : ' + data.data.cnt);
+                $('#ts_'+data.data.node_id+'_p').text('updated : ' + data.data.ts_pretty);
+            });
+        }    
+            
+        </script>
+    </body>        
+</html>    
